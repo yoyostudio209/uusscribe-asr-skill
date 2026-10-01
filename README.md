@@ -11,7 +11,7 @@ Use UUScribe to transcribe a local audio file or a public, single-video YouTube 
 
 ## Install and use
 
-After this repository is published, compatible clients can install it from its GitHub URL with `npx skills add <owner>/uusscribe-asr`. The `SKILL.md` file contains the agent workflow and safety rules. You can also run the bundled client directly:
+After this repository is published, compatible clients can install it from its GitHub URL with `npx skills add <owner>/uusscribe-asr-skill`. The `SKILL.md` file contains the agent workflow and safety rules. You can also run the bundled client directly:
 
 ```bash
 python3 scripts/transcribe.py 'https://www.youtube.com/watch?v=VIDEO_ID' --submit-only
