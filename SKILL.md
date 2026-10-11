@@ -1,5 +1,5 @@
 ---
-name: uusscribe-asr
+name: uusscribe-asr-skill
 description: Transcribe local audio files or public single-video YouTube URLs with UUScribe. Use when the user asks for speech-to-text, audio transcription, a YouTube transcript, subtitle text, or speaker-labeled segments.
 metadata:
   author: UUScribe

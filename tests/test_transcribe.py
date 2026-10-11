@@ -87,6 +87,8 @@ class UUScribeAsrTests(unittest.TestCase):
             "https://youtube.com.evil.example/watch?v=abc",
             "https://fake.youtu.be/dQw4w9WgXcQ",
             "https://www.youtube.com/playlist?list=abc",
+            "https://www.youtube.com/watch?v=abc&list=PL123",
+            "https://youtu.be/abc?list=PL123",
             "https://www.youtube.com/@channel",
             "https://example.com/audio.mp3",
         ]
@@ -144,6 +146,30 @@ class UUScribeAsrTests(unittest.TestCase):
                 client.upload_audio(audio, "Meeting", 12)
 
         self.assertTrue(any(path == "/api/uploads/abort" for _, path, _ in client.calls))
+
+    def test_completion_disconnect_does_not_abort_uncertain_task(self) -> None:
+        client = RecordingClient()
+        original_request = client.request_json
+
+        def fail_completion(
+            method: str,
+            path: str,
+            payload: dict[str, Any] | None = None,
+            retry_transient: bool = False,
+        ) -> dict[str, Any]:
+            if path == "/api/uploads/complete":
+                client.calls.append((method, path, payload))
+                raise MODULE.UUScribeError("response lost")
+            return original_request(method, path, payload, retry_transient)
+
+        client.request_json = fail_completion
+        with tempfile.TemporaryDirectory() as directory:
+            audio = Path(directory) / "meeting.mp3"
+            audio.write_bytes(b"hello world")
+            with self.assertRaisesRegex(MODULE.UUScribeError, "response lost"):
+                client.upload_audio(audio, "Meeting", 12)
+
+        self.assertFalse(any(path == "/api/uploads/abort" for _, path, _ in client.calls))
 
     def test_transcript_keeps_nonempty_segment_text(self) -> None:
         transcript = MODULE.transcript_from_segments(

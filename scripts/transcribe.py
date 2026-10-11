@@ -76,7 +76,9 @@ def youtube_video_url(value: str) -> bool:
 
     host = parsed.hostname.lower().rstrip(".")
     path_parts = [part for part in parsed.path.split("/") if part]
-    query = urllib.parse.parse_qs(parsed.query)
+    query = urllib.parse.parse_qs(parsed.query, keep_blank_values=True)
+    if "list" in query:
+        return False
 
     if host == "youtu.be":
         return len(path_parts) == 1
@@ -383,19 +385,6 @@ class UUScribeClient:
                 if uploaded_size != size or handle.read(1):
                     raise UUScribeError("Audio file changed while it was being uploaded")
 
-            completed = self.request_json(
-                "POST",
-                "/api/uploads/complete",
-                {
-                    "path": upload_path,
-                    "upload_id": upload_id,
-                    "original_name": path.name,
-                    "content_type": content_type,
-                    "size": size,
-                    "duration": duration,
-                    "name": name,
-                },
-            )
         except Exception:
             try:
                 self.request_json(
@@ -408,6 +397,20 @@ class UUScribeClient:
                 pass
             raise
 
+        # Completion may have created a billable task even if its response is lost.
+        completed = self.request_json(
+            "POST",
+            "/api/uploads/complete",
+            {
+                "path": upload_path,
+                "upload_id": upload_id,
+                "original_name": path.name,
+                "content_type": content_type,
+                "size": size,
+                "duration": duration,
+                "name": name,
+            },
+        )
         task = completed.get("task")
         if not isinstance(task, dict):
             raise UUScribeError("UUScribe API did not return the created task")
