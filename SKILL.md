@@ -3,7 +3,7 @@ name: uusscribe-asr-skill
 description: Transcribe local audio files or public single-video YouTube URLs with UUScribe. Use when the user asks for speech-to-text, audio transcription, a YouTube transcript, subtitle text, or speaker-labeled segments.
 metadata:
   author: UUScribe
-  version: "1.0.0"
+  version: "1.0.1"
   openclaw:
     requires:
       env:
@@ -32,7 +32,7 @@ Create transcription tasks through the UUScribe API. Keep the core instructions 
 
 1. The runtime needs Python 3.9+ and network access. Local audio also needs `ffprobe`.
 2. Read `UUSCRIBE_API_KEY` from the environment. Do not ask the user to paste it into chat or a command argument, and never print it.
-3. The default API URL is `https://scribe.uustudio.cc`. Set `UUSCRIBE_API_BASE` only when the user explicitly specifies a self-hosted or development environment.
+3. The default API URL is [https://scribe.uustudio.cc](https://scribe.uustudio.cc). Set `UUSCRIBE_API_BASE` only when the user explicitly specifies a self-hosted or development environment.
 4. Use `ffprobe` to determine the actual duration of local audio; do not guess. If the user provides an accurate duration in seconds, use `--duration`.
 5. The API key's account must have UUScribe API access and is subject to its balance, concurrency, and upload limits.
 6. Connect only to HTTPS APIs by default. Allow HTTP only for localhost development addresses. Authenticated requests do not follow redirects.

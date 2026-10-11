@@ -1,6 +1,6 @@
 # UUScribe ASR Skill
 
-Use UUScribe to transcribe a local audio file or a public, single-video YouTube URL from a compatible agent. The skill includes a Python standard-library client; no Python packages are needed.
+Use [UUScribe](https://scribe.uustudio.cc) to transcribe a local audio file or a public, single-video YouTube URL from a compatible agent. The skill includes a Python standard-library client; no Python packages are needed.
 
 ## Requirements
 
@@ -11,7 +11,7 @@ Use UUScribe to transcribe a local audio file or a public, single-video YouTube 
 
 ## Install and use
 
-Install this skill from GitHub with `npx skills add 6a209/uusscribe-asr-skill`. The `SKILL.md` file contains the agent workflow and safety rules. You can also run the bundled client directly:
+Install this skill from GitHub with `npx skills add yoyostudio209/uusscribe-asr-skill`. The `SKILL.md` file contains the agent workflow and safety rules. You can also run the bundled client directly:
 
 ```bash
 python3 scripts/transcribe.py 'https://www.youtube.com/watch?v=VIDEO_ID' --submit-only
